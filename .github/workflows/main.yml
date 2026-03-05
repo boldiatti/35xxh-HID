@@ -1,0 +1,29 @@
+name: Build RG35XXH HID Firmware
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Install dependencies
+      run: |
+        sudo apt update
+        sudo apt install -y build-essential git wget unzip bc
+
+    - name: Run build script
+      run: |
+        chmod +x build.sh
+        ./build.sh
+
+    - name: Upload firmware
+      uses: actions/upload-artifact@v3
+      with:
+        name: rg35xxh-hid-firmware
+        path: output/images/
