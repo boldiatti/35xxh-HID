@@ -1,0 +1,24 @@
+name: Build RG35XXH HID Firmware
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v3
+
+    - name: Create image
+      run: |
+        dd if=/dev/zero of=rg35xxh-hid.img bs=1M count=2048
+        mkfs.vfat rg35xxh-hid.img
+
+    - name: Upload artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: rg35xxh-hid
+        path: rg35xxh-hid.img
